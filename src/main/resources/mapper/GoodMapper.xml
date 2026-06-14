@@ -12,7 +12,7 @@
                 AND category_id = #{categoryId}
             </if>
             <if test="hot != null and hot == true">
-                AND hot = 1
+                AND hot = TRUE
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (name LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%'))
