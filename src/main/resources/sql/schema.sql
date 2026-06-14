@@ -1,0 +1,83 @@
+CREATE DATABASE IF NOT EXISTS atelier_shop DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE atelier_shop;
+
+DROP TABLE IF EXISTS order_item;
+DROP TABLE IF EXISTS shop_order;
+DROP TABLE IF EXISTS good;
+DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS carousel;
+DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS admin;
+
+CREATE TABLE user (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(64) NOT NULL UNIQUE,
+    email VARCHAR(128) NOT NULL UNIQUE,
+    password VARCHAR(128) NOT NULL,
+    nickname VARCHAR(64) NOT NULL DEFAULT '',
+    phone VARCHAR(32) NOT NULL DEFAULT '',
+    address VARCHAR(256) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE admin (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(64) NOT NULL UNIQUE,
+    password VARCHAR(128) NOT NULL,
+    role VARCHAR(32) NOT NULL DEFAULT 'admin',
+    name VARCHAR(64) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE category (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(64) NOT NULL,
+    icon VARCHAR(32) NOT NULL DEFAULT '📁',
+    description VARCHAR(256) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE good (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(128) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    category_id BIGINT NOT NULL,
+    img VARCHAR(512) NOT NULL,
+    description TEXT,
+    stock INT NOT NULL DEFAULT 0,
+    status VARCHAR(8) NOT NULL DEFAULT 'on',
+    hot TINYINT(1) NOT NULL DEFAULT 0,
+    INDEX idx_good_category (category_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE shop_order (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    order_no VARCHAR(32) NOT NULL UNIQUE,
+    create_time DATETIME NOT NULL,
+    pay_time DATETIME NULL,
+    status INT NOT NULL DEFAULT 0,
+    total_price DECIMAL(10, 2) NOT NULL,
+    address VARCHAR(256) NOT NULL,
+    receiver VARCHAR(64) NOT NULL,
+    phone VARCHAR(32) NOT NULL,
+    logistics_company VARCHAR(64) NULL,
+    tracking_no VARCHAR(64) NULL,
+    logistics_status VARCHAR(64) NULL,
+    INDEX idx_order_user (user_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE order_item (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    order_id BIGINT NOT NULL,
+    good_id BIGINT NOT NULL,
+    count INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    INDEX idx_order_item_order (order_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE carousel (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(128) NOT NULL,
+    subtitle VARCHAR(256) NOT NULL DEFAULT '',
+    img VARCHAR(512) NOT NULL,
+    link VARCHAR(256) NOT NULL DEFAULT '/',
+    sort_order INT NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.su.ateliershop.mapper.ShopOrderMapper">
+    <select id="findAll" resultType="com.su.ateliershop.entity.ShopOrder">
+        SELECT id, user_id AS userId, order_no AS orderNo, create_time AS createTime,
+               pay_time AS payTime, status, total_price AS totalPrice,
+               address, receiver, phone,
+               logistics_company AS logisticsCompany,
+               tracking_no AS trackingNo,
+               logistics_status AS logisticsStatus
+        FROM shop_order ORDER BY create_time DESC
+    </select>
+    <select id="findByUserId" resultType="com.su.ateliershop.entity.ShopOrder">
+        SELECT id, user_id AS userId, order_no AS orderNo, create_time AS createTime,
+               pay_time AS payTime, status, total_price AS totalPrice,
+               address, receiver, phone,
+               logistics_company AS logisticsCompany,
+               tracking_no AS trackingNo,
+               logistics_status AS logisticsStatus
+        FROM shop_order WHERE user_id = #{userId} ORDER BY create_time DESC
+    </select>
+    <select id="findById" resultType="com.su.ateliershop.entity.ShopOrder">
+        SELECT id, user_id AS userId, order_no AS orderNo, create_time AS createTime,
+               pay_time AS payTime, status, total_price AS totalPrice,
+               address, receiver, phone,
+               logistics_company AS logisticsCompany,
+               tracking_no AS trackingNo,
+               logistics_status AS logisticsStatus
+        FROM shop_order WHERE id = #{id}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO shop_order (user_id, order_no, create_time, pay_time, status, total_price,
+            address, receiver, phone, logistics_company, tracking_no, logistics_status)
+        VALUES (#{userId}, #{orderNo}, #{createTime}, #{payTime}, #{status}, #{totalPrice},
+            #{address}, #{receiver}, #{phone}, #{logisticsCompany}, #{trackingNo}, #{logisticsStatus})
+    </insert>
+    <update id="update">
+        UPDATE shop_order SET
+            pay_time = #{payTime},
+            status = #{status},
+            logistics_company = #{logisticsCompany},
+            tracking_no = #{trackingNo},
+            logistics_status = #{logisticsStatus}
+        WHERE id = #{id}
+    </update>
+    <select id="countByDatePrefix" resultType="int">
+        SELECT COUNT(*) FROM shop_order WHERE order_no LIKE CONCAT(#{prefix}, '%')
+    </select>
+</mapper>

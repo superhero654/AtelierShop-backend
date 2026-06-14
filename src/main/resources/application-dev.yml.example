@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/atelier_shop?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: your_username
+    password: your_password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+insighthub:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: your_access_key_id
+    access-key-secret: your_access_key_secret
+    bucket-name: your_bucket_name

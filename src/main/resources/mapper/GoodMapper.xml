@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.su.ateliershop.mapper.GoodMapper">
+    <select id="findAll" resultType="com.su.ateliershop.entity.Good">
+        SELECT id, name, price, category_id AS categoryId, img, description, stock, status, hot
+        FROM good
+        <where>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="categoryId != null">
+                AND category_id = #{categoryId}
+            </if>
+            <if test="hot != null and hot == true">
+                AND hot = 1
+            </if>
+            <if test="keyword != null and keyword != ''">
+                AND (name LIKE CONCAT('%', #{keyword}, '%') OR description LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        ORDER BY id
+    </select>
+    <select id="findById" resultType="com.su.ateliershop.entity.Good">
+        SELECT id, name, price, category_id AS categoryId, img, description, stock, status, hot
+        FROM good WHERE id = #{id}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO good (name, price, category_id, img, description, stock, status, hot)
+        VALUES (#{name}, #{price}, #{categoryId}, #{img}, #{description}, #{stock}, #{status}, #{hot})
+    </insert>
+    <update id="update">
+        UPDATE good SET
+            name = #{name},
+            price = #{price},
+            category_id = #{categoryId},
+            img = #{img},
+            description = #{description},
+            stock = #{stock},
+            status = #{status},
+            hot = #{hot}
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        DELETE FROM good WHERE id = #{id}
+    </delete>
+</mapper>
