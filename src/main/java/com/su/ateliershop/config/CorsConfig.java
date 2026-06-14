@@ -14,7 +14,11 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of("http://localhost:*", "https://*.vercel.app"));
+        config.setAllowedOriginPatterns(List.of(
+                "http://localhost:*",
+                "https://*.vercel.app",
+                "https://*.netlify.app"
+        ));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
